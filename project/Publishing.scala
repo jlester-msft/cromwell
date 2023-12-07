@@ -114,8 +114,10 @@ object Publishing {
       cache = false,
       removeIntermediateContainers = BuildOptions.Remove.Always,
       pullBaseImage = BuildOptions.Pull.Always,
-      platforms = List("linux/amd64", "linux/arm64"),
-      additionalArguments = List("--push")
+      // Strange hack - don't use the native `platforms` option because we don't want the automatic `--load` option that it adds
+      // This is because loading multi platform images does not work for Reasons
+      // https://github.com/marcuslonnberg/sbt-docker/blob/33749751714f54aad053cb3ff53bf3ef8d3847a9/src/main/scala/sbtdocker/DockerBuild.scala#L117C17-L117C17
+      additionalArguments = List("--push", "--platform", "linux/amd64,linux/arm64")
     )
   )
 
@@ -166,7 +168,7 @@ object Publishing {
   val additionalResolvers = List(
     broadArtifactoryResolver,
     broadArtifactoryResolverSnap,
-    Resolver.sonatypeRepo("releases")
+    Resolver.sonatypeOssRepos("releases")
   )
 
   private val artifactoryCredentialsFile =
