@@ -114,7 +114,8 @@ object Publishing {
       cache = false,
       removeIntermediateContainers = BuildOptions.Remove.Always,
       pullBaseImage = BuildOptions.Pull.Always,
-      platforms = List("linux/amd64", "linux/arm64")
+      platforms = List("linux/amd64", "linux/arm64"),
+      additionalArguments = List("--push")
     )
   )
 
